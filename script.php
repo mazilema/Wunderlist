@@ -77,12 +77,18 @@
 
 	    function __construct()
 	    {
-	    	$user = exec("whoami");
-	    	if (file_exists("/Users/$user/Library/Wunderlist/wunderlist.db")) {
-	    		$this->open("/Users/$user/Library/Wunderlist/wunderlist.db");	
-	    	}
-			else {
-				exit("Unable to find local Wunderlist task database");
+	    	// Get the home path of the user
+	    	$user = $_ENV[ 'HOME' ];
+
+	    	// Default location of wunderlist db file
+	    	$dbfile = $user . '/Library/Wunderlist/wunderlist.db';
+
+	    	// Check if wunderlist db file exists and is readable
+	    	if ( is_readable( $dbfile ) ) {
+	    		$this->open( $dbfile );	
+
+	    	} else {
+				exit( "Unable to find local Wunderlist task database" );
 			}
 	    }
 
